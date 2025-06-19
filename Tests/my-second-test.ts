@@ -6,7 +6,7 @@ import {sleep} from 'k6';
 export const options: Options = {
     vus: 3,
     //iterations: 100,
-    stage: [
+    stages: [
         {duration: '10s', target: 80},
         {duration: '25s', target: 10},
         {duration: '20s', target: 45},

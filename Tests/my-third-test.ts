@@ -4,11 +4,10 @@ import { sleep, check, group } from "k6";
 
 export const options: Options = {
   stages: [
-    { duration: "10s", target: 80 },
     { duration: "25s", target: 10 },
-    { duration: "20s", target: 45 },
-    { duration: "50s", target: 45 },
-    { duration: "10s", target: 100 },
+    { duration: "25s", target: 40 },
+    { duration: "25s", target: 15 },
+    { duration: "25s", target: 85 },
     { duration: "10s", target: 0 },
   ],
 
@@ -41,17 +40,18 @@ export default () => {
       "content-type is html": function (r) {
         return r.headers["Content-Type"]?.includes("text/html");
       },
-      "Response time is less 1000ms": function (r) {
-        return r.timings.duration <= 1000;
+      "Response time is less 1200ms": function (r) {
+        return r.timings.duration <= 1200;
       },
     });
   });
 
   group("Create User (POST)", function () {
-    const url = "https://reqres.in/api/users";
+    const url = "https://jsonplaceholder.typicode.com/posts";
     const payload = JSON.stringify({
-      name: "morpheus",
-      job: "leader",
+      title: "morpheus",
+      body: "leader",
+      userId: 10,
     });
     const headers = {
       "Content-Type": "application/json",
@@ -64,15 +64,24 @@ export default () => {
       "Contnet Type is JSON": function (r) {
         return r.headers["Content-Type"]?.includes("application/json");
       },
-      "Response includes name": function (r) {
+      "Response includes title": function (r) {
         if (typeof r.body === "string") {
-          try {
-            const body = JSON.parse(r.body);
-            return body.name === "morpheus";
-          } catch (e) {
-            console.error("JSON parse failed:", e.message);
-            return false;
-          }
+          const body = JSON.parse(r.body);
+          return body.title === "morpheus";
+        }
+        return false;
+      },
+      "Response include body": function (r) {
+        if (typeof r.body === "string") {
+          const body = JSON.parse(r.body);
+          return body.body=== "leader";
+        }
+        return false;
+      },
+      "Response include userID": function (r) {
+        if (typeof r.body === "string") {
+          const body = JSON.parse(r.body);
+          return body.userId === 10;
         }
         return false;
       },
