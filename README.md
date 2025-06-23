@@ -42,7 +42,7 @@ A grouped scenario test including:
 
 ## Author
 
-[Dilan Meegoda](https://www.linkedin.com/in/dilanmeegoda/)  
+[Dilan Meegoda](https://www.linkedin.com/in/dilan-meegoda/)  
 Medium: [@dilanmeegoda](https://medium.com/@dilanmeegodavithana)
 
 ---
